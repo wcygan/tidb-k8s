@@ -1,14 +1,21 @@
 # TiDB on Kubernetes
 
+TiDB is a distributed SQL database that provides horizontal scalability, strong consistency, and high availability. It is compatible with MySQL and can be deployed on Kubernetes.
+
 [Get Started with TiDB on Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started)
 
-## Steps
+## Quick Start
 
 ### Deployment
 
 ```bash
+# Install the TiDB Operator CRDs
 kubectl create -f https://raw.githubusercontent.com/pingcap/tidb-operator/v1.6.1/manifests/crd.yaml
+
+# Deploy the TiDB Operator
 skaffold run -m tidb-operator
+
+# Deploy the rest of the TiDB Cluster
 skaffold run -m tidb-cluster
 skaffold run -m tidb-dashboard
 skaffold run -m tidb-monitor
@@ -55,6 +62,17 @@ Next, you can begin creating tables and running queries.
 2. [join.sql](sql/join.sql)
 3. [subquery.sql](sql/subquery.sql)
 4. [agg.sql](sql/agg.sql)
+
+### Accessing the Grafana Dashboard
+
+```bash
+kubectl port-forward -n tidb-cluster svc/example-grafana 3000:3000
+```
+
+Visit http://localhost:3000/login
+
+- Username: admin
+- Password: admin
 
 ### Clean up
 
