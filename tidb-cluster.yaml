@@ -1,0 +1,45 @@
+apiVersion: pingcap.com/v1alpha1
+kind: TidbCluster
+metadata:
+  name: example
+  namespace: tidb-cluster
+spec:
+  version: v8.5.0
+  timezone: UTC
+  pvReclaimPolicy: Retain
+  enableDynamicConfiguration: true
+  configUpdateStrategy: RollingUpdate
+  discovery: {}
+  helper:
+    image: alpine:3.16.0
+  pd:
+    baseImage: pingcap/pd
+    maxFailoverCount: 2
+    replicas: 3
+    storageClassName: openebs-hostpath
+    requests:
+      storage: "1Gi"
+    config: {}
+  tikv:
+    baseImage: pingcap/tikv
+    maxFailoverCount: 2
+    replicas: 3
+    storageClassName: openebs-hostpath
+    requests:
+      storage: "1Gi"
+    config:
+      storage:
+        reserve-space: "10GB"
+      rocksdb:
+        # In basic examples, we set this to avoid the following error in some Kubernetes clusters:
+        # "the maximum number of open file descriptors is too small, got 1024, expect greater or equal to 82920"
+        max-open-files: 256
+      raftdb:
+        max-open-files: 256
+  tidb:
+    baseImage: pingcap/tidb
+    maxFailoverCount: 2
+    replicas: 3
+    service:
+      type: ClusterIP
+    config: {}

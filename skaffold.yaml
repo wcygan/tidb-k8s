@@ -1,0 +1,45 @@
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: tidb-operator
+deploy:
+  helm:
+    releases:
+      - name: tidb-operator
+        repo: https://charts.pingcap.org/
+        remoteChart: tidb-operator
+        namespace: tidb-admin
+        createNamespace: true
+        version: 1.6.1
+        wait: true
+---
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: tidb-cluster
+deploy:
+  kubectl: {}
+manifests:
+  rawYaml:
+    - tidb-cluster-namespace.yaml
+    - tidb-cluster.yaml
+---
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: tidb-dashboard
+deploy:
+  kubectl: {}
+manifests:
+  rawYaml:
+    - tidb-dashboard.yaml
+---
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: tidb-monitor
+deploy:
+  kubectl: {}
+manifests:
+  rawYaml:
+    - tidb-monitor.yaml
