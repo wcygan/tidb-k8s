@@ -19,6 +19,21 @@ skaffold run -m tidb-operator
 skaffold run -m tidb-cluster
 skaffold run -m tidb-dashboard
 skaffold run -m tidb-monitor
+
+# Lastly, check the status of the TiDB cluster
+kubectl get pods -n tidb-cluster
+NAME                                 READY   STATUS    RESTARTS      AGE
+example-discovery-6f87b545d4-7flxz   1/1     Running   0             52m
+example-monitor-0                    4/4     Running   0             48m
+example-pd-0                         1/1     Running   1 (52m ago)   52m
+example-pd-1                         1/1     Running   0             52m
+example-pd-2                         1/1     Running   0             52m
+example-tidb-0                       2/2     Running   0             51m
+example-tidb-1                       2/2     Running   0             51m
+example-tidb-2                       2/2     Running   0             51m
+example-tikv-0                       1/1     Running   0             51m
+example-tikv-1                       1/1     Running   0             51m
+example-tikv-2                       1/1     Running   0             51m
 ```
 
 ### Testing
